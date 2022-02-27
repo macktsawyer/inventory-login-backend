@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
+const cookieParser = require('cookie-parser');
 const UserModel = require('../models/userModel');
 
 // Desc : Register new user -- Temporary Route
@@ -43,7 +44,7 @@ const registerUser = asyncHandler(async(req, res) => {
         throw new Error('Invalid User Data')
     }
     res.json({ message: 'User Registered'})
-})
+});
 
 // Desc : Login User
 // Route : POST
@@ -54,8 +55,15 @@ const loginUser = asyncHandler(async (req, res) => {
     // Check for username
     const user = await UserModel.findOne({ username })
 
+    // const accessToken = generateToken(user._id)
+
     // Check for password
     if (user && (await bcrypt.compare(password, user.password))) {
+
+        // Using header / bearer token, cookie not needed
+        // res.cookie('access-token', accessToken, { 
+        //     maxAge: 60*60*24*30*1000,
+        // })
         res.json({
             _id: user.id,
             username: user.username,
@@ -65,7 +73,7 @@ const loginUser = asyncHandler(async (req, res) => {
         res.json(400)
         throw new Error('Invalid credentials')
     }
-})
+});
 
 // Desc : Get the admin dashboard
 // Route : GET
@@ -77,7 +85,7 @@ const getDashboard = asyncHandler(async (req, res) => {
         id: _id,
         username: username
     })
-})
+});
 
 // Desc : Log out the user
 // Route : 
@@ -85,13 +93,13 @@ const getDashboard = asyncHandler(async (req, res) => {
 
 const logoutUser = asyncHandler(async (req, res) => {
     res.json({ message: 'User Logged Out'})
-})
+});
 
 // Generate JWT
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '30d'})
-}
+};
 
 module.exports = {
     registerUser,
