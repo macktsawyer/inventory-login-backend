@@ -3,15 +3,14 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-// const cookieParser = require('cookie-parser');
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
 require('dotenv').config();
 
 const PORT = process.env.PORT || '3001';
 
 app.use(express.json());
 app.use(cors());
-// app.use(cookieParser());
 dotenv.config();
 
 const mongooseAPI = process.env.MONGOOSE_API;
@@ -21,6 +20,7 @@ mongoose.connect(
 );
 
 app.use('/user', userRoutes)
+app.use('/inv', inventoryRoutes)
 
 app.listen(PORT, () => {
     console.log('Running on 3001')
