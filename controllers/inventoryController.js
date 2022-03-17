@@ -47,13 +47,24 @@ const getInventory = asyncHandler(async (req, res) => {
         .sort_by('public_id', 'desc')
         .max_results(30)
         .execute();
-    const publicIds = resources.map(file => file.public_id.split('/')[1]);
-
-
+    const publicIds = resources.map(file => file.public_id);
     res.send(publicIds);
+})
+
+// /inv/getInformation/:number
+const getInformation = asyncHandler(async (req, res) => {
+    const itemNumber = req.params.number;
+    const itemInfo = await InventoryModel.findOne({itemNumber});
+    res.status(200).json({
+        id: itemInfo.id,
+        item: itemInfo.item,
+        description: itemInfo.description,
+        price: itemInfo.price, 
+    })
 })
 
 module.exports = {
     newInventory,
-    getInventory
+    getInventory,
+    getInformation
 }
