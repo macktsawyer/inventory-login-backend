@@ -41,30 +41,35 @@ const newInventory = asyncHandler(async (req, res) => {
     }
 });
 
+// /inv/getInventory
 const getInventory = asyncHandler(async (req, res) => {
+    let idCode = [];
+
     const { resources } = await cloudinary.search
         .expression('folder:inv_lib_dump')
         .sort_by('public_id', 'desc')
         .max_results(30)
         .execute();
     const publicIds = resources.map(file => file.public_id);
-    res.send(publicIds);
-})
 
-// /inv/getInformation/:number
-const getInformation = asyncHandler(async (req, res) => {
-    const itemNumber = req.params.number;
-    const itemInfo = await InventoryModel.findOne({itemNumber});
+    for (let i of publicIds) {
+        idCode.push(i.split('/')[1])
+    }
+
+    const information = await InventoryModel.find({
+        'id': {
+            $in: idCode,
+        }
+    });
+
     res.status(200).json({
-        id: itemInfo.id,
-        item: itemInfo.item,
-        description: itemInfo.description,
-        price: itemInfo.price, 
-    })
+        publicIds, 
+        idCode,
+        information
+    });
 })
 
 module.exports = {
     newInventory,
-    getInventory,
-    getInformation
+    getInventory
 }
