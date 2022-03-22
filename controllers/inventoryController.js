@@ -19,6 +19,7 @@ const newInventory = asyncHandler(async (req, res) => {
         })
         const itemInfo = InventoryModel.create({
             id: file_id,
+            publicId: `inv_lib_dump/${file_id}`,
             item: item_name,
             description: item_desc,
             price: item_price,
