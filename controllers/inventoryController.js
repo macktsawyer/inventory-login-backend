@@ -46,28 +46,29 @@ const newInventory = asyncHandler(async (req, res) => {
 const getInventory = asyncHandler(async (req, res) => {
     let idCode = [];
 
-    const { resources } = await cloudinary.search
+    try {
+        const { resources } = await cloudinary.search
         .expression('folder:inv_lib_dump')
         .sort_by('public_id', 'desc')
         .max_results(30)
         .execute();
-    const publicIds = resources.map(file => file.public_id);
-
-    for (let i of publicIds) {
-        idCode.push(i.split('/')[1])
-    }
-
-    const information = await InventoryModel.find({
-        'id': {
-            $in: idCode,
+        const publicIds = resources.map(file => file.public_id);
+        for (let i of publicIds) {
+            idCode.push(i.split('/')[1])
         }
-    });
+    
+        let information = await InventoryModel.find({
+            'id': {
+                $in: idCode,
+            }
+        });
 
-    res.status(200).json({
-        publicIds, 
-        idCode,
-        information
-    });
+        res.status(200).json({
+            information
+        });
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 module.exports = {
