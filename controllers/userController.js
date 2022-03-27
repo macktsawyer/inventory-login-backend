@@ -87,13 +87,12 @@ const getDashboard = asyncHandler(async (req, res) => {
     })
 });
 
-// Desc : Log out the user
-// Route : 
+// Desc: Change Password
+// Route: POST
 
-
-const logoutUser = asyncHandler(async (req, res) => {
-    res.json({ message: 'User Logged Out'})
-});
+const changePassword = asyncHandler(async (req, res) => {
+    console.log(password)
+})
 
 // Generate JWT
 
@@ -104,6 +103,5 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
-    getDashboard,
-    logoutUser
+    getDashboard
 }
