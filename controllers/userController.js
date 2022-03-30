@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
-const cookieParser = require('cookie-parser');
 const UserModel = require('../models/userModel');
 
 // Desc : Register new user -- Temporary Route
@@ -55,15 +54,8 @@ const loginUser = asyncHandler(async (req, res) => {
     // Check for username
     const user = await UserModel.findOne({ username })
 
-    // const accessToken = generateToken(user._id)
-
     // Check for password
     if (user && (await bcrypt.compare(password, user.password))) {
-
-        // Using header / bearer token, cookie not needed
-        // res.cookie('access-token', accessToken, { 
-        //     maxAge: 60*60*24*30*1000,
-        // })
         res.json({
             _id: user.id,
             username: user.username,
@@ -91,7 +83,23 @@ const getDashboard = asyncHandler(async (req, res) => {
 // Route: POST
 
 const changePassword = asyncHandler(async (req, res) => {
-    console.log(password)
+    const { username, oldPassword, newPassword } = req.body; 
+    const user = await UserModel.findOne({ username });
+    try {
+        // Compare old pass to database pass
+        if (user && (await bcrypt.compare(oldPassword, user.password))) {
+            // Salt and hash new pass
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(newPassword, salt);
+            // Update new pass in mongo
+            const updatePassword = await user.updateOne( { password: hashedPassword });
+            if (updatePassword) {
+                return res.status(200).json({ msg: `${username} successfully changed password` })
+            }
+        }
+    } catch (error) {
+        console.error(error)
+    }
 })
 
 // Generate JWT
@@ -103,5 +111,6 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
-    getDashboard
+    getDashboard,
+    changePassword
 }

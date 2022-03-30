@@ -3,6 +3,9 @@ const InventoryModel = require('../models/inventoryModel');
 const { cloudinary } = require('../utils/cloudinary');
 const uuid = require('uuid');
 
+// /inv/newInventory
+// Desc: Create new inventory item
+// Method: POST
 const newInventory = asyncHandler(async (req, res) => {
     try {
         const file_id = uuid.v4();
@@ -43,6 +46,8 @@ const newInventory = asyncHandler(async (req, res) => {
 });
 
 // /inv/getInventory
+// Desc: Get the inventory items
+// Method: GET
 const getInventory = asyncHandler(async (req, res) => {
     let idCode = [];
 
@@ -70,6 +75,24 @@ const getInventory = asyncHandler(async (req, res) => {
         console.error(error)
     }
 })
+
+// /inv/updateInventory
+// Desc: Update an inventory item
+// Method: POST
+
+const updateInventory = asyncHandler(async (req, res) => {
+    console.log('Updated Inventory')
+})
+
+
+// /inv/deleteInventory
+// Desc: Delete an inventory item
+// Method: POST
+
+const deleteInventory = asyncHandler(async (req, res) => {
+    console.log('Deleted Inventory')
+})
+
 
 module.exports = {
     newInventory,
