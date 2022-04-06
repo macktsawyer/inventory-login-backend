@@ -91,9 +91,10 @@ const updateInventory = asyncHandler(async (req, res) => {
 
 const deleteInventory = asyncHandler(async (req, res) => {
     try {
-        const { item_id, userName, password } = req.body;
-        await cloudinary.uploader.destroy(`inv_lib_dump/${item_id}`);
+        const { item_id, itemID } = req.body;
+        await cloudinary.uploader.destroy(`inv_lib_dump/${itemID}`);
         await InventoryModel.deleteOne( { id: item_id } ).clone()
+        res.send('Deleted')
     } catch (error) {
         console.error(error)
     }
