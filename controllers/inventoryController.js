@@ -88,21 +88,26 @@ const updateInventory = asyncHandler(async (req, res) => {
 // /inv/deleteInventory
 // Desc: Delete an inventory item
 // Method: POST
-
-const deleteInventory = asyncHandler(async (req, res) => {
+const deleteImage = asyncHandler(async (req, res) => {
     try {
-        const { item_id, itemID } = req.body;
+        const { itemID } = req.body;
         await cloudinary.uploader.destroy(`inv_lib_dump/${itemID}`);
-        await InventoryModel.deleteOne( { id: item_id } ).clone()
-        res.send('Deleted')
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
+})
+
+// Create two API - one for cloudinary and one for mongoDB
+const deleteInventory = asyncHandler(async (req, res) => {
+    const item_id = req.params.id;
+    await InventoryModel.findByIdAndRemove( item_id ).exec();
+    res.send('Deleted')
 })
 
 
 module.exports = {
     newInventory,
     getInventory,
-    deleteInventory
+    deleteInventory,
+    deleteImage
 }
