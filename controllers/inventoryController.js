@@ -101,7 +101,6 @@ const deleteImage = asyncHandler(async (req, res) => {
 const deleteInventory = asyncHandler(async (req, res) => {
     const item_id = req.params.id;
     await InventoryModel.findByIdAndRemove( item_id ).exec();
-    res.send('Deleted')
 })
 
 
