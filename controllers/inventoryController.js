@@ -30,8 +30,6 @@ const newInventory = asyncHandler(async (req, res) => {
         })
         if (itemInfo) {
             res.status(201).json({
-                id: itemInfo.id,
-                item: itemInfo.item,
                 msg: 'Upload successful'
             })
         } else {
