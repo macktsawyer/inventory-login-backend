@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const InventoryModel = require('../models/inventoryModel');
 const { cloudinary } = require('../utils/cloudinary');
 const uuid = require('uuid');
+const mongoose = require('mongoose');
 
 // /inv/newInventory
 // Desc: Create new inventory item
@@ -9,6 +10,7 @@ const uuid = require('uuid');
 const newInventory = asyncHandler(async (req, res) => {
     try {
         const file_id = uuid.v4();
+        const mongoose_id = new mongoose.Types.ObjectId();
         const { item_name, item_desc, item_price } = req.body;
         const fileStr = req.body.image_data;
         if(!item_name || !item_desc || !item_price) {
@@ -26,11 +28,19 @@ const newInventory = asyncHandler(async (req, res) => {
             item: item_name,
             description: item_desc,
             price: item_price,
-            image: fileStr
+            image: fileStr,
+            _id: mongoose_id
         })
+
         if (itemInfo) {
-            res.status(201).json({
-                msg: 'Upload successful'
+            res.send({ 
+                description: req.body.item_desc, 
+                id: file_id, 
+                image: fileStr, 
+                item: req.body.item_name, 
+                price: req.body.item_price, 
+                publicId: `inv_lib_dump/${file_id}`,
+                _id: mongoose_id
             })
         } else {
             res.status(400)
