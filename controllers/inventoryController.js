@@ -89,7 +89,10 @@ const getInventory = asyncHandler(async (req, res) => {
 // Method: POST
 
 const updateInventory = asyncHandler(async (req, res) => {
-    console.log('Updated Inventory')
+    const { updateInfo } = req.body;
+    // Will need publicID, _id, item_name, item_desc, item_price, uid info, and image_data
+    // Pretty much fucking everything
+    console.log(updateInfo)
 })
 
 
@@ -116,5 +119,6 @@ module.exports = {
     newInventory,
     getInventory,
     deleteInventory,
-    deleteImage
+    deleteImage,
+    updateInventory
 }

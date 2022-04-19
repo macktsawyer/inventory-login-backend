@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { newInventory, getInventory, deleteInventory, deleteImage } = require('../controllers/inventoryController');
+const { newInventory, getInventory, deleteInventory, deleteImage, updateInventory } = require('../controllers/inventoryController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/newInventory', newInventory)
 router.post('/deleteImage', deleteImage)
+router.post('/updateInventory', updateInventory)
 
 router.delete('/deleteInventory/:id', deleteInventory)
 
