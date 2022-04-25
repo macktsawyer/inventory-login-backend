@@ -91,13 +91,12 @@ const getInventory = asyncHandler(async (req, res) => {
 const updateInventory = asyncHandler(async (req, res) => {
     const { updateInfo } = req.body;
     const id = req.body._id;
-    // Still need to add cloudinary update and double check information
+
     try {
         await InventoryModel.findById(id, (error, updatedItem) => {
             updatedItem.item = updateInfo.item_name;
             updatedItem.price = updateInfo.item_price;
-            updatedItem.desc = updateInfo.item_desc;
-            updatedItem.image = updateInfo.item_image;            
+            updatedItem.desc = updateInfo.item_desc;        
         })
     } catch (error) {
         console.error(error);
