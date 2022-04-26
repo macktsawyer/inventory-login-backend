@@ -89,20 +89,19 @@ const getInventory = asyncHandler(async (req, res) => {
 // Method: POST
 
 const updateInventory = asyncHandler(async (req, res) => {
-    const { updateInfo } = req.body;
-    const id = req.body._id;
+    const { item_name, item_desc, item_price, item_id } = req.body;
 
-    try {
-        await InventoryModel.findById(id, (error, updatedItem) => {
-            updatedItem.item = updateInfo.item_name;
-            updatedItem.price = updateInfo.item_price;
-            updatedItem.desc = updateInfo.item_desc;        
-        })
-    } catch (error) {
-        console.error(error);
-    }
+    await InventoryModel.findByIdAndUpdate(item_id, (error, updatedItem) => {
+        if (error) {
+            console.error(error)
+        } else {
+            updatedItem.item = item_name;
+            updatedItem.price = item_price;
+            updatedItem.desc = item_desc;
+            updatedItem.save();  
+        }
+    })
 
-    console.log(updateInfo)
 })
 
 
