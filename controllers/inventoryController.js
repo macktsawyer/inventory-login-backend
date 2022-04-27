@@ -90,19 +90,23 @@ const getInventory = asyncHandler(async (req, res) => {
 
 const updateInventory = asyncHandler(async (req, res) => {
     const { item_name, item_desc, item_price, item_id } = req.body;
+    let responseInfo = []
 
-    await InventoryModel.findByIdAndUpdate(item_id, (error, updatedItem) => {
-        if (error) {
-            console.error(error)
-        } else {
-            updatedItem.item = item_name;
-            updatedItem.price = item_price;
-            updatedItem.desc = item_desc;
-            updatedItem.save();  
+    InventoryModel.findByIdAndUpdate(
+        { _id: item_id }, 
+        {$set: {"item": item_name, "description": item_desc, "price": item_price}})
+        .exec(function(err, res){
+            if (err) {
+                console.error(err)
+            } else {
+                console.log(res)
+                responseInfo.push(res)
+            }
+        })
+        if (req.body) {
+            res.json(responseInfo)
         }
     })
-
-})
 
 
 // /inv/deleteInventory

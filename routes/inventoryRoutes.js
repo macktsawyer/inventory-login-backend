@@ -5,7 +5,7 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.post('/newInventory', newInventory)
 router.post('/deleteImage', deleteImage)
-router.post('/updateInventory', updateInventory)
+router.put('/updateInventory', updateInventory)
 
 router.delete('/deleteInventory/:id', deleteInventory)
 
