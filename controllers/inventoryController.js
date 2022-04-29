@@ -90,6 +90,7 @@ const getInventory = asyncHandler(async (req, res) => {
 
 const updateInventory = asyncHandler(async (req, res) => {
     const { item_name, item_desc, item_price, item_id } = req.body;
+    const allItems = InventoryModel.find();
 
     InventoryModel.findByIdAndUpdate(
         { _id: item_id }, 
@@ -98,9 +99,11 @@ const updateInventory = asyncHandler(async (req, res) => {
         function(err, model){
             if (err) {
                 console.error(err)
-            } 
-            res.json(model)
+            } else {
+                console.log(model)
+            }
         })
+        res.json(allItems)
     })
 
 
