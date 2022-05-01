@@ -100,15 +100,10 @@ const updateInventory = asyncHandler(async (req, res) => {
                 console.error(err)
             } else {
                 console.log(model)
+                res.sendStatus(200)
             }
         })
-    InventoryModel.find({}, (err, result) => {
-        if (err) {
-            res.json(err)
-        } else {
-            res.json(result)
-        }
-    })
+
     })
 
 
