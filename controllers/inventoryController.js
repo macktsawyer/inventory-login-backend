@@ -122,7 +122,7 @@ const deleteImage = asyncHandler(async (req, res) => {
 // Create two API - one for cloudinary and one for mongoDB
 const deleteInventory = asyncHandler(async (req, res) => {
     const item_id = req.params.id;
-    await InventoryModel.findByIdAndRemove( item_id ).exec();
+    await InventoryModel.findByIdAndRemove( item_id ).exec(); // Want to try and secure delete inventory in backend if poss.
 })
 
 
