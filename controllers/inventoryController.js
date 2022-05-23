@@ -114,6 +114,7 @@ const deleteImage = asyncHandler(async (req, res) => {
     try {
         const { itemID } = req.body;
         await cloudinary.uploader.destroy(`inv_lib_dump/${itemID}`);
+        // Confirm delete by verifying user is an admin user
     } catch (error) {
         console.error(error);
     }
