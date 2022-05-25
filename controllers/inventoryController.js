@@ -114,8 +114,6 @@ const deleteImage = asyncHandler(async (req, res) => {
     try {
         const { itemID } = req.body;
         await cloudinary.uploader.destroy(`inv_lib_dump/${itemID}`);
-        // Confirm delete by verifying user is an admin user then 
-        // delete the image
     } catch (error) {
         console.error(error);
     }
@@ -125,8 +123,6 @@ const deleteImage = asyncHandler(async (req, res) => {
 const deleteInventory = asyncHandler(async (req, res) => {
     const item_id = req.params.id;
     await InventoryModel.findByIdAndRemove( item_id ).exec(); 
-        // Confirm delete by verifying user is an admin user then 
-        // delete the item
 })
 
 
